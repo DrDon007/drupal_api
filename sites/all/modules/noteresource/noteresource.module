@@ -1,0 +1,144 @@
+<?php
+// noteresource.module
+/** Gets a note object by id.
+ *
+ * @param int $id
+ * @return object
+ */
+function noteresource_get_note($id) {
+  return db_query('SELECT * FROM {note} WHERE id=:id', array(':id' => $id))
+           ->fetchAll();
+}
+
+/** Writes a note to the database
+ *
+ * @param object $note
+ * @return void
+ */
+function noteresource_write_note($note) {
+  $primary_key = !empty($note->id) ? array('id') : NULL;
+  drupal_write_record('note', $note, $primary_key);
+}
+
+/**
+ * Deletes a note from the database.
+ *
+ * @param int $id
+ * @return void
+ */
+function noteresource_delete_note($id) {
+  db_query('DELETE FROM {note} WHERE id=:id', array(':id' => $id));
+}
+
+/**
+ * Implementation of hook_services_resources().
+ */
+function noteresource_services_resources() {
+  return array(
+    'note' => array(
+      'retrieve' => array(
+        'help' => 'Retrieves a note',
+        'file' => array('file' => 'inc', 'module' => 'noteresource'),
+        'callback' => '_noteresource_retrieve',
+        'access callback' => '_noteresource_access',
+        'access arguments' => array('view'),
+        'access arguments append' => TRUE,
+        'args' => array(
+          array(
+            'name' => 'id',
+            'type' => 'int',
+            'description' => 'The id of the note to get',
+            'source' => array('path' => '0'),
+            'optional' => FALSE,
+          ),
+        ),
+      ),
+      'create' => array(
+        'help' => 'Creates a note',
+        'file' => array('file' => 'inc', 'module' => 'noteresource'),
+        'callback' => '_noteresource_create',
+        'access arguments' => array('note resource create'),
+        'access arguments append' => FALSE,
+        'args' => array(
+          array(
+            'name' => 'data',
+            'type' => 'struct',
+            'description' => 'The note object',
+            'source' => 'data',
+            'optional' => FALSE,
+          ),
+        ),
+      ),
+      'update' => array(
+        'help' => 'Updates a note',
+        'file' => array('file' => 'inc', 'module' => 'noteresource'),
+        'callback' => '_noteresource_update',
+        'access callback' => '_noteresource_access',
+        'access arguments' => array('update'),
+        'access arguments append' => TRUE,
+        'args' => array(
+          array(
+            'name' => 'id',
+            'type' => 'int',
+            'description' => 'The id of the node to update',
+            'source' => array('path' => '0'),
+            'optional' => FALSE,
+          ),
+          array(
+            'name' => 'data',
+            'type' => 'struct',
+            'description' => 'The note data object',
+            'source' => 'data',
+            'optional' => FALSE,
+          ),
+        ),
+      ),
+      'delete' => array(
+        'help' => 'Deletes a note',
+        'file' => array('file' => 'inc', 'module' => 'noteresource'),
+        'callback' => '_noteresource_delete',
+        'access callback' => '_noteresource_access',
+        'access arguments' => array('delete'),
+        'access arguments append' => TRUE,
+        'args' => array(
+          array(
+            'name' => 'nid',
+            'type' => 'int',
+            'description' => 'The id of the note to delete',
+            'source' => array('path' => '0'),
+            'optional' => FALSE,
+          ),
+        ),
+      ),
+      'index' => array(
+        'help' => 'Retrieves a listing of notes',
+        'file' => array('file' => 'inc', 'module' => 'noteresource'),
+        'callback' => '_noteresource_index',
+        'access callback' => 'user_access',
+        'access arguments' => array('access content'),
+        'access arguments append' => FALSE,
+        'args' => array(
+          array(
+            'name' => 'page',
+            'type' => 'int',
+            'description' => '',
+            'source' => array(
+              'param' => 'page',
+            ),
+            'optional' => TRUE,
+            'default value' => 0,
+          ),
+          array(
+           'name' => 'parameters',
+           'type' => 'array',
+           'description' => '',
+           'source' => 'param',
+           'optional' => TRUE,
+           'default value' => array(),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+?>

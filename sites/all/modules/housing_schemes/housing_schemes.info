@@ -1,0 +1,7 @@
+name = Housing Schemes Services
+description = WebService APIs for Housing Schemes.
+core = 7.x
+package = Housing Schemes
+project = housing_schemes
+dependencies[] = services
+dependencies[] = rest_server

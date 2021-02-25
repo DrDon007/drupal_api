@@ -1,0 +1,15 @@
+<?php
+
+function demo_services_services_resources() {
+  $resources = array();
+
+ //Include the necessary inc files.
+  module_load_include('inc', 'demo_services', 'includes/demo_services.services');
+
+ //Service Apis for contents.
+  $resources += demo_services_resource();
+  return $resources;
+}
+
+
+?>
