@@ -28,9 +28,9 @@ function demo_resource() {
 	);
   return $api;
 }
-//function _custom_resource_access(){
-//	return TRUE;
-//}
+function _custom_resource_access(){
+	return TRUE;
+}
 
 
 

@@ -1,0 +1,16 @@
+<?php
+
+function models_services_resources() 
+{
+  $resources = array();
+
+ //Include the necessary inc files.
+  module_load_include('inc', 'models', 'models.services');
+
+ //Service Apis for contents.
+  $resources += models_resource();
+  return $resources;
+}
+
+
+?>

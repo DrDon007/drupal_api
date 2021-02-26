@@ -1,0 +1,4 @@
+name = Get Weather Forcast Data API
+description = Weather Forcast Data
+core = 7.x
+package = Custom API

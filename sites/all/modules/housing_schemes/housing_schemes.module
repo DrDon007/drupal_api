@@ -12,10 +12,12 @@ function housing_schemes_services_services_resources() {
   return $resources;
 }
 
-function housing_schemes_services_resource_retrieve($nid) {
+function housing_schemes_services_resource_retrieve($nid)
+ {
   $node = node_load($nid);
   //Check if the node type is housing schemes.
-  if ($node->type == 'housing_scheme') {
+  if ($node->type == 'housing_scheme') 
+  {
     //Get PROPERTY DESCRIPTION data from field collection.
     $property_description = $node->body[LANGUAGE_NONE][0]['value'];
     // here we are loading field collection

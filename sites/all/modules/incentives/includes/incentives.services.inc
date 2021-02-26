@@ -28,7 +28,9 @@ function incentives_resource() {
 	);
   return $api;
 }
-function _custom_resource_access(){
+
+function _custom_resource_access()
+{
 	return TRUE;
 }
 

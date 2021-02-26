@@ -1,0 +1,4 @@
+name = Get Brands API
+description = Fetching all Brands
+core = 7.x
+package = Custom API

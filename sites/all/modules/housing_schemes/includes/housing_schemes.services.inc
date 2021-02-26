@@ -1,15 +1,12 @@
 <?php
+
 function housing_schemes_services_resource() {
   $api = array(
     'housing_schemes' => array(
       'operations' => array(
         'retrieve' => array(
           'help' => 'Retrieves housing schemes info.',
-          'file' => array(
-            'type' => 'inc',
-            'module' => 'housing_schemes_services',
-            'name' => 'housing_schemes.services',
-          ),
+          'file' => array('type' => 'inc','module' => 'housing_schemes_services','name' => 'housing_schemes.services',),
           'callback' => 'housing_schemes_services_resource_retrieve',
           'access callback' => 'user_access',
           'access arguments' => array('access content'),
