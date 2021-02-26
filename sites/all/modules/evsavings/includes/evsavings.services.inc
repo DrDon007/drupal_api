@@ -1,0 +1,32 @@
+<?php
+
+function evsavings_resource() {
+	$api = array(
+		'evsavings-api' => array(
+		  'operations' => array(
+			'index' => array(
+			  'help' => 'get all brands',
+			  'callback' => 'get_all_brands',
+			  'file' => array('type' => 'inc', 'module' => 'evsavings', 'name' => 'includes/evsavings.services'),
+			  'access callback' => '_custom_resource_access',
+			  'access arguments' => array(),
+			  'access arguments append' => TRUE,
+			  'args' => array(),
+			),
+		  ),
+		),
+	);
+  return $api;
+}
+
+function _custom_resource_access(){
+	return TRUE;
+}
+
+function get_all_brands(){
+	
+        $result = db_query('SELECT * FROM evbrands')->fetchAll();
+		return $result;
+}
+
+
