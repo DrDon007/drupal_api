@@ -1,14 +1,14 @@
 <?php
 
-function models_resource() {
+function evmodels_resource() {
 	$api = array(
 		'getAllModels' => array(
 		  'operations' => array(
 			'index' => array(
-			  'help' => 'get all models',
-			  'callback' => 'get_models',
-			  'file' => array('type' => 'inc', 'module' => 'brands', 'name' => 'brands.services'),
-			  'access callback' => '_models_custom_resource_access',
+			  'help' => 'get all ev models',
+			  'callback' => 'get_evmodels',
+			  'file' => array('type' => 'inc', 'module' => 'evmodels', 'name' => 'evmodels.services'),
+			  'access callback' => 'evmodels_custom_resource_access',
 			  'access arguments' => array(),
 			  'access arguments append' => TRUE,
 			  'args' => array(),
@@ -19,12 +19,12 @@ function models_resource() {
   return $api;
 }
 
-function _models_custom_resource_access()
+function evmodels_custom_resource_access()
 {
 	return TRUE;
 }
 
-function get_models()
+function get_evmodels()
 {
 	$params = drupal_get_query_parameters();
 	$BrandID = $params['id'];

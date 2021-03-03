@@ -1,0 +1,62 @@
+function searchHoursOut($StateName,$CountyName) 
+{
+ //    "SELECT * FROM app_poweroutage_history where state_name=? and county_name=? ";
+}
+
+
+function ResiliencyFactor($state, $county)
+{
+   // $resiliencyFactorScore;
+   // $finalHazardIndexScore;
+        //hoursOut
+        //searchHoursOut.searchHoursOut(state, county);
+        //hazard index
+       // await searchHazardIndex.searchHazardIndex(county, state).then((res) => {
+        //    $finalHazardIndexScore = res;
+       // });
+        //resiliency Factor calculation
+       // resiliencyFactorScore = ($finalHoursOutValue + $finalHazardIndexScore) / 2;
+       // return round(resiliencyFactorScore);
+} 
+
+
+function get_SevereWeatherResults()
+{
+	$params = drupal_get_query_parameters();
+	$state_name = $params['stateName'];
+    $country_name= $params['countryName'];
+    $lattitude= $params['lat'];
+    $longitude= $params['long'];
+
+	if (!empty($lattitude) && !empty($longitude) && !empty($state_name) && !empty($county_name)) 
+    {
+		$result = db_query("SELECT * FROM `app_longlat_values` where lattitude='$lattitude' and longitude='$longitude' and state_name='$state_name' and  county_name='$country_name'")->fetchAll();
+		return $result;
+	}
+	else
+    {
+		$result = db_query("SELECT * FROM `app_longlat_values`")->fetchAll();
+		return $result;
+	}
+
+}
+
+   $gridX = 0;
+        $gridY = 0;
+        $office = 0;
+    foreach ($stdata as $std) 
+    {
+        $gridX = $std['gridX'];
+        $gridY = $std['gridY'];
+        $office = $std['cwa'];
+    }
+      return $office;
+    $url1 = "https://api.weather.gov/gridpoints/{$office}/{$gridX},{$gridY}/forecast";
+    $fdata = drupal_http_request($url1);
+   // $fpdata = json_decode($fdata, TRUE);
+    foreach ($fpdata as $fpdata) 
+    {
+        $periods = $fpdata['periods'];
+    }
+    //$periods=getMessageMatrix(70);
+    return $periods;

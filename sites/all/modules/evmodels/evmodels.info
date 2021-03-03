@@ -1,4 +1,4 @@
-name = Get Models API
+name = Get all ev Models API
 description = Fetching all Models
 core = 7.x
 package = Custom API

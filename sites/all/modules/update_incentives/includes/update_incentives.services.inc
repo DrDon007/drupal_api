@@ -22,17 +22,16 @@ function update_incentives_resource() {
 // 	return TRUE;
 // }
 
-function update_incentives(){
-	$params = drupal_get_query_parameters();
 
+function update_incentives()
+{
+	$params = drupal_get_query_parameters();
 	$id = $params['id'];
 	$des = $params['des'];
-
 	$cr_update_no= db_update('app_incentives_data_v2') // Table name no longer needs {}
                 ->fields(array('text' => $des))
                 ->condition('id', $id, '=')
                 ->execute();
-
 	return $cr_update_no;
 }
 
