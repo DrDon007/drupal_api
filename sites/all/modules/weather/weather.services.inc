@@ -273,8 +273,10 @@ function get_SevereWeatherResults()
         $resiliencyMessages=getMessageMatrix($resiliencyFactorScore);
         //return $resiliencyMessages;
 
-        $response=$powerDisruptionData+array("pspsEvents"=>$pspsEventData)+array("weatherEvents"=>$wEventData)+$resiliencyMessages;
+        $response=$powerDisruptionData + array("pspsEvents"=>$pspsEventData) + array("weatherEvents"=>$wEventData) + $resiliencyMessages;
+        //var_dump($powerDisruptionData$pspsEventData.$wEventData);
         return $response;
+        //return $resiliencyFactorScore;
     }
     else
     {
