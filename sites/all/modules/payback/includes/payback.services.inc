@@ -23,26 +23,34 @@ function payback_resource_access(){
 }
 
 function get_payback(){
-	//$url = "http://34.197.190.88:8888/solarOnlySavings?addr={$zipcode}&bill=150&pv=6";
-	//$Response = file_get_contents($url);
-	//$Response = json_decode($Response, TRUE);
-
 	$params = drupal_get_query_parameters();
+	$zipcode = $params['zipcode'];
 	
-	//$zipcode = $params['zipcode'];
 	$countyName = $params['countyName'];
 	$stateCode = $params['stateCode'];
-	//var_dump($countyName."+".$stateCode);
+
 
 	
 	//return $Response['annualSavingsElectric'];
 	
-	if (!empty($countyName) && !empty($stateCode)) {		
+	if (!empty($countyName) && !empty($stateCode) ) {		
 		
-		$sql = 'SELECT value FROM app_installation_price n WHERE n.county_name = :county AND n.statecode = :state';
+		$sql = 'SELECT * FROM app_installation_price n WHERE n.county_name = :county AND n.statecode = :state';
 		$result1 = db_query($sql, array(':county' => $countyName, ':state' => $stateCode))->fetchAll();   
-		$result2 = $result1['value']*1000;
-		return $result2;
+		$result2 = $result1[0]->value*1000;
+		$result3 = ($result2-(($result2 * 26)/100)) * 6;
+		$data = $result3;
+	
+		$url = "http://34.197.190.88:8888/solarOnlySavings?addr={$zipcode}&bill=150&pv=6";
+		$Response = drupal_http_request("http://34.197.190.88:8888/solarOnlySavings?addr={$zipcode}&bill=150&pv=6");
+		$Response = file_get_contents($url);
+		$Response = json_decode($Response, TRUE);
+		$arr[] = $Response['annualSavingsElectric'];
+		//var_dump($Response['annualSavingsElectric']);
+		$length = count($Response['annualSavingsElectric']);
+		for ($i = 0; $i < $length; $i++) {
+			$data = $data - ceil($Response['annualSavingsElectric'][$i])."\n";
+		}
 	}
 	else{
 			$result = 3.2*1000;
