@@ -1,6 +1,6 @@
 <?php 
-function roof_resource() {
-
+function roof_resource() 
+{
     'getResult' => array(
 		  'operations' => array(
 			'index' => array(
