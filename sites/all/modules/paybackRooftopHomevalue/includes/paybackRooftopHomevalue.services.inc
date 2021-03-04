@@ -1,14 +1,16 @@
 <?php 
+
 function paybackRooftopHomevalue_resource() 
 {
-    'paybackRooftopHomevalue-api' => array(
+  $api = array(
+		'paybackRooftopHomevalue-api' => array(
 		  'operations' => array(
 			'index' => array(
-			  'help' => 'get a article based on node id',
+			  'help' => 'payback rooftop home value calculator',
 			  'callback' => 'get_paybackRooftopHomevalue',
 			  'file' => array('type' => 'inc', 'module' => 'paybackRooftopHomevalue', 'name' => 'includes/paybackRooftopHomevalue.services'),
 			  'access callback' => 'paybackRooftopHomevalue_custom_resource_access',
-			  'access arguments' => array(),
+        'access arguments' => array(),
 			  'access arguments append' => TRUE,
 			  'args' => array(),
 			),
@@ -18,12 +20,14 @@ function paybackRooftopHomevalue_resource()
   return $api;
 }
 
-
-
 function paybackRooftopHomevalue_custom_resource_access()
 {
 	return TRUE;
 }
+
+
+
+
 
 
 function get_paybackRooftopHomevalue()
@@ -36,4 +40,5 @@ function get_paybackRooftopHomevalue()
     $zipCode=$params['zipCode'];
     
 }
+
 ?>
