@@ -108,20 +108,20 @@ function get_PspsEvents()
 	$country = $params['countryName'];
     
     $url="https://preprod.poweroutage.us/api/geojson_1_4/Enphase98!u28!@0gujf?RequestType=Planned&CountryId=US";
-    //$pspsEventsData = file_get_contents($url);
-    // $pspsEventsData=drupal_http_request($url);
-    //$pspsEventData = json_decode($pspsEventsData, TRUE);
-   // return $pspsEventsData;
+    $pspsEventsData = file_get_contents($url);
+    //$pspsEventsData=drupal_http_request($url);
+    $pspsEventData = json_decode($pspsEventsData);
+    return $pspsEventData;
 
     if(!empty($country))
     {
-        $pspsEventsData = db_query("SELECT id,county_name,MAX(est_customers_impacted) as est_customers_impacted,event_type,cities_impacted,estimated_startdate,est_restoration_date,medical_baseline_customers,customers_restored,status,est_restoration_time FROM psps_outage_data where county_name='$country' GROUP BY county_name")->fetchAll();
-	    return $pspsEventsData;
+      // $pspsEventsData = db_query("SELECT id,county_name,MAX(est_customers_impacted) as est_customers_impacted,event_type,cities_impacted,estimated_startdate,est_restoration_date,medical_baseline_customers,customers_restored,status,est_restoration_time FROM psps_outage_data where county_name='$country' GROUP BY county_name")->fetchAll();
+	   // return $pspsEventsData;
     }
     else
     {
-        $pspsEventsData = db_query("SELECT id,county_name,MAX(est_customers_impacted) as est_customers_impacted,event_type,cities_impacted,estimated_startdate,est_restoration_date,medical_baseline_customers,customers_restored,status,est_restoration_time FROM psps_outage_data GROUP BY county_name")->fetchAll();
-	    return $pspsEventsData;
+      //  $pspsEventsData = db_query("SELECT id,county_name,MAX(est_customers_impacted) as est_customers_impacted,event_type,cities_impacted,estimated_startdate,est_restoration_date,medical_baseline_customers,customers_restored,status,est_restoration_time FROM psps_outage_data GROUP BY county_name")->fetchAll();
+	   // return $pspsEventsData;
     }
     
 }
