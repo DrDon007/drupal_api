@@ -1,0 +1,15 @@
+<?php
+
+function roof_services_resources() {
+  $resources = array();
+
+ //Include the necessary inc files.
+  module_load_include('inc', 'roof', 'includes/roof.services');
+
+ //Service Apis for contents.
+  $resources += roof_resource();
+  return $resources;
+}
+
+
+?>
