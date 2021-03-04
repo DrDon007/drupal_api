@@ -8,7 +8,7 @@ function payback_resource() {
 			  'help' => 'get all payback, rooftop, homevalue',
 			  'callback' => 'get_payback',
 			  'file' => array('type' => 'inc', 'module' => 'payback', 'name' => 'includes/payback.services'),
-			  'access callback' => '_custom_resource_access',
+			  'access callback' => 'payback_resource_access',
 			  'access arguments' => array(),
 			  'access arguments append' => TRUE,
 			  'args' => array(),
@@ -18,12 +18,12 @@ function payback_resource() {
 	);
   return $api;
 }
-function _custom_resource_access(){
+function payback_resource_access(){
 	return TRUE;
 }
 
 function get_payback(){
-	//$url = "http://34.197.190.88:8888/solarOnlySavings?addr={$zipcode}&bill=150&pv=5";
+	//$url = "http://34.197.190.88:8888/solarOnlySavings?addr={$zipcode}&bill=150&pv=6";
 	//$Response = file_get_contents($url);
 	//$Response = json_decode($Response, TRUE);
 
