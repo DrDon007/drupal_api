@@ -51,10 +51,31 @@ function get_payback(){
 		for ($i = 0; $i < $length; $i++) {
 			$data = $data - ceil($Response['annualSavingsElectric'][$i])."\n";
 		}
+
+    //$lat = $params['lat'];
+    //$long = $params['long'];
+    $countyName = $params['countyName'];
+	$stateCode = $params['stateCode'];
+	//$zipCode = $params['zipCode'];
+	//var_dump($params);
+
+
+
+	/*$response = drupal_http_request("http://34.197.190.88:8888/solarOnlySavings?addr=95054&bill=150&pv=5");
+    return $response->data;*/
+
+	if (!empty($countyName) && !empty($stateCode)) {
+		//$result = db_query('SELECT * FROM app_installation_price n WHERE n.county_name = :countyName AND n.statecode = :stateCode' , array(':county_name' => $countyName))->fetchAll();
+
+		$sql = 'SELECT value FROM app_installation_price n WHERE n.county_name = :countyName AND n.statecode = :stateCode';
+		$result1 = db_query($sql, array(':countyName' => $countyName, ':stateCode' => $stateCode))->fetchAll();
+		//return $result1;
+		
 	}
 	else{
 			$result = 3.2*1000;
 			return $result;
 	}
+
 }
 ?>
