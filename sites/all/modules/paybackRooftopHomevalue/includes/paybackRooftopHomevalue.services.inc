@@ -1,14 +1,16 @@
 <?php 
+
 function paybackRooftopHomevalue_resource() 
 {
-    'paybackRooftopHomevalue-api' => array(
+  $api = array(
+		'paybackRooftopHomevalue-api' => array(
 		  'operations' => array(
 			'index' => array(
-			  'help' => 'get a article based on node id',
+			  'help' => 'payback rooftop home value calculator',
 			  'callback' => 'get_paybackRooftopHomevalue',
 			  'file' => array('type' => 'inc', 'module' => 'paybackRooftopHomevalue', 'name' => 'includes/paybackRooftopHomevalue.services'),
 			  'access callback' => 'paybackRooftopHomevalue_custom_resource_access',
-			  'access arguments' => array(),
+       			 'access arguments' => array(),
 			  'access arguments append' => TRUE,
 			  'args' => array(),
 			),
@@ -18,13 +20,38 @@ function paybackRooftopHomevalue_resource()
   return $api;
 }
 
-
-
 function paybackRooftopHomevalue_custom_resource_access()
 {
 	return TRUE;
 }
 
+
+function get_propertyID()
+{
+   $quant_property_id="https://qvmservices-test.quantarium.com/QDataService/QueryPropertiesByAddress?u=EnphaseEnergy-Test&k=.6-s3V%3B49%5B1G8qDn&address=5700%20N%20OCEAN%20BLVD%20UNIT%201010&citystate_zip=29582";
+   $res = file_get_contents($quant_property_id);
+   $property_id_data = json_decode($res, TRUE);
+	foreach($property_id_data as $data) 
+	{
+		$property_id = $data['id'];
+	}
+	return $property_id;
+}
+
+function get_homeValue($property_id)
+{
+   $quantariumData="https://qvmservices.quantarium.com/QDataService/GetPropertyRecordsXML?u=EnphaseEnergy&k=csF%2BW94CKg}QmTR%3C&id=119857621&records=all";
+   $res = file_get_contents($quantariumData);
+   $quantariumEstimateValue = simplexml_load_string($res);
+   //return $quantariumEstimateValue;
+   $valuation= $quantariumEstimateValue[0];
+   foreach($valuation as $data) 
+   {
+		$estimated_value = $data->estimated_value;
+		//return $estimated_value;
+   }
+	return (int)$estimated_value;
+}
 
 function get_paybackRooftopHomevalue()
 {
@@ -34,17 +61,25 @@ function get_paybackRooftopHomevalue()
     $countryName=$params['countryName'];
     $stateCode=$params['stateCode'];
     $zipCode=$params['zipCode'];
-    $initialCapacity= 600;
-   $minAgeOfSolarSystem= 0;
-   $zipCode;
-   $monthlyBill= 150;
+    $initialCapacity= 6;
+    $minAgeOfSolarSystem= 0;
+    $zipCode=77843;
+    $monthlyBill= 150;
+		
+	//----------------------values from api calls, getting homevalue ----------------------
+    $quanteriumPropertyID=get_propertyID();
+    //return $quanteriumPropertyID;
+	$homeValueQuantarium=get_homeValue($quanteriumPropertyID);
+	//return $homeValueQuantarium;	
+	//--------------------values from api calls-------------------------------
+	
+	//home values Solar calling a funtion 
+    $homeValueSolar=getOperatingCf($initialCapacity,$minAgeOfSolarSystem,$zipCode,$monthlyBill);
+	//return $homeValueSolar;
+		
+	//homeValueQuantarium = shared.getQuantariumValue(lat, long)
 
-		//home values Solar calling a funtion 
-    homeValueSolar=getOperatingCf($initialCapacity,$minAgeOfSolarSystem,$zipCode,$monthlyBill);
-
-	//this value will come from the api for home value
-	homeValueQuantarium = shared.getQuantariumValue(lat, long)
-    finalHomeValue= homeValueSolar + homeValueQuantarium.homevaue;
+    $finalHomeValue= $homeValueSolar + $homeValueQuantarium;
 
 	/* final result 
 			 homeValueWithSolar: finalHomeValue;
@@ -53,50 +88,55 @@ function get_paybackRooftopHomevalue()
             initialCapacity: initialCapacity;
             ageOfSolarSystem: minAgeOfSolarSystem,
 	*/
-    }
-
-
-    function getOperatingCf(initialCapacity,minAgeOfSolarSystem,zipCode,monthlyBill)
-    {
-      getBilSavings = getBillSavings(installedCapacity, zipcode, bill);
-
-	  /*this is node js code have to write in php 
-							let cfMap = new Map();
-						let cfArray = [];
-						let finalOM = paybackService.getOM();
-						for (let i = Number(ageOfSolarSystem) + 1; i <= 25; i++) {
-							let billSavingsValue = getBilSavings.get(i) + finalOM;
-							cfMap.set(i, Math.round(billSavingsValue));
-							cfArray.push(billSavingsValue);
-						}
-						let sum = cfArray.reduce((a, b) => a + b, 0);
-						// let payBackSavings = (sum / cfArray.length) * 20;
-						let payBackSavings = sum;
-						// console.log(Math.round(payBackSavings));
-						return Math.round(payBackSavings);*/
-							
-    }
-
-    // calculating Bill saving for home value
-    getBillSavings($installedCapacity, $zipcode, $bill)
-    {
-		
-		$url1="http://34.197.190.88:8888/solarOnlySavings?addr=${zipcode}&bill=${bill}&pv=${installedCapacity}";
-   		 $res = file_get_contents($url1);
-			
-			// we have to fetch the annual saving elctrics array from above apis and store into map with key and value
-    	$annualSavingsElectrics = json_decode($res, TRUE);
+	$response=array("homeValueWithSolar"=>$finalHomeValue,"estimatedSavings"=>$homeValueSolar,"homeValueWithOutSolar"=>$homeValueQuantarium,"initialCapacity"=>$initialCapacity,"ageOfSolarSystem"=>$minAgeOfSolarSystem);
+	return array("homeValueData"=>$response);
 	
-			/* this is taken from node js as same we have to wrte in php  and it will return the array into getOperatingCf function
-
-			savingsMap = new Map();
-		for (let i = 0; i <= 24; i++) {
-		let billSavings = response.data.annualSavingsElectric[i];
-
-		savingsMap.set(i + 1, Math.round(billSavings));
-		}*/
-
-		return savingsMap;
-    }
 }
+
+
+function myfunction($v1,$v2)
+{
+	return $v1+$v2;
+}
+
+function getOM()
+{
+	return 0;
+}
+
+function getOperatingCf($initialCapacity,$minAgeOfSolarSystem,$zipCode,$monthlyBill)
+{
+    $getBilSavings = getBillSavings($initialCapacity, $zipcode, $bill);
+	//return $getBilSavings;
+	$finalOM = getOM();
+	for($i = $minAgeOfSolarSystem + 0; $i <=24; $i++) 
+	{
+		//$sum = $sum+   $getBilSavings[$i];						
+		$billSavingsValue = round($getBilSavings[$i]) + $finalOM;
+		//return $billSavingsValue;
+		$cfMap[$i] =$billSavingsValue;
+		//return $cfMap[$i];
+		$cfArray[$i] =$billSavingsValue;
+	}
+	//return $sum;
+	$sum = array_reduce($cfArray,"myfunction",0);
+	return $sum;
+	$payBackSavings = $sum;	
+	//return round($payBackSavings);				
+}
+
+// calculating Bill saving for home value
+function getBillSavings($initialCapacity, $zipcode, $bill)
+{
+	$url1="http://34.197.190.88:8888/solarOnlySavings?addr=77843&bill=5000&pv=6";
+   	$res = file_get_contents($url1);
+	$new = json_decode($res, TRUE);
+	foreach($new as $data) 
+	{
+		$data1 = $data['annualSavingsElectric'];
+	}		
+	return $data;
+}
+
+
 ?>
