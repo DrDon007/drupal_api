@@ -109,7 +109,7 @@ function getOperatingCf($initialCapacity,$minAgeOfSolarSystem,$zipCode,$monthlyB
     $getBilSavings = getBillSavings($initialCapacity, $zipcode, $bill);
 	//return $getBilSavings;
 	$finalOM = getOM();
-	for($i = $minAgeOfSolarSystem + 0; $i <=24; $i++) 
+	for($i = $minAgeOfSolarSystem + 0; $i <25; $i++) 
 	{
 		//$sum = $sum+   $getBilSavings[$i];						
 		$billSavingsValue = round($getBilSavings[$i]) + $finalOM;
