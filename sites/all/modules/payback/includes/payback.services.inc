@@ -33,7 +33,7 @@ function get_payback(){
 	
 	//return $Response['annualSavingsElectric'];
 	
-	if (!empty($countyName) && !empty($stateCode) ) {		
+	if (!empty($countyName) && !empty($stateCode)) {		
 		
 		$sql = 'SELECT * FROM app_installation_price n WHERE n.county_name = :county AND n.statecode = :state';
 		$result1 = db_query($sql, array(':county' => $countyName, ':state' => $stateCode))->fetchAll();   
