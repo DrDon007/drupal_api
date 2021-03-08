@@ -1,4 +1,4 @@
 name = Get EV Savings API
-description = Fetching all the ev savings by Scketch
+description = Fetching all the brands by Scketch
 core = 7.x
 package = Custom API
