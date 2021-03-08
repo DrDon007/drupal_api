@@ -1,13 +1,13 @@
 <?php
 
-function finetune_resource() {
+function payback_rooftop_homevalue_resource() {
 	$api = array(
 		'finetune-api' => array(
 		  'operations' => array(
 			'index' => array(
 			  'help' => 'get all payback, rooftop, homevalue for finetune values',
 			  'callback' => 'get_finetune',
-			  'file' => array('type' => 'inc', 'module' => 'finetune', 'name' => 'includes/finetune.services'),
+			  'file' => array('type' => 'inc', 'module' => 'payback_rooftop_homevalue', 'name' => 'includes/payback_rooftop_homevalue.services'),
 			  'access callback' => 'finetune_resource_access',
 			  'access arguments' => array(),
 			  'access arguments append' => TRUE,

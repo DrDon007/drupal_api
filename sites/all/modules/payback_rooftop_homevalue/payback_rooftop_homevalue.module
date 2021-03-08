@@ -1,0 +1,14 @@
+
+
+<?php
+
+function payback_rooftop_homevalue_services_resources() {
+  $resources = array();
+
+ //Include the necessary inc files.
+  module_load_include('inc', 'payback_rooftop_homevalue', 'includes/payback_rooftop_homevalue.services');
+
+ //Service Apis for contents.
+  $resources += payback_rooftop_homevalue_resource();
+  return $resources;
+}
