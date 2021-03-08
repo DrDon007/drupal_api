@@ -191,7 +191,7 @@ function get_payback_rooftop_homevalue(){
     $homeValueSolar=getOperatingCf($initialCapacity,$minAgeOfSolarSystem,$zipcode,$monthlyBill);
 	
 	//----------------------values from api calls, getting homevalue ----------------------
-	$quanteriumPropertyID=get_propertyID(29582);
+	$quanteriumPropertyID=get_propertyID($zipcode);
 	
 	$homeValueQuantarium=get_homeValue($quanteriumPropertyID);
     $finalHomeValue= $homeValueSolar + $homeValueQuantarium;
