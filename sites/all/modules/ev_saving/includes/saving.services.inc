@@ -4,7 +4,7 @@ function saving_resource() {
 		'getEvSavings' => array(
 		  'operations' => array(
 			'index' => array(
-			  'help' => 'get a article based on node id',
+			  'help' => 'Get a EvSaving passing lattitude,longitude, avgMilesTravelledInMonth, batterySize,range',
 			  'callback' => 'get_saving',
 			  'file' => array('type' => 'inc', 'module' => 'saving', 'name' => 'includes/saving.services'),
 			  'access callback' => '_custom_resource_access',
