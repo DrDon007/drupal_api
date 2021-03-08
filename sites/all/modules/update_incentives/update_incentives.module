@@ -1,0 +1,15 @@
+<?php
+
+function update_incentives_services_resources() {
+  $resources = array();
+
+ //Include the necessary inc files.
+  module_load_include('inc', 'update_incentives', 'includes/update_incentives.services');
+
+ //Service Apis for contents.
+  $resources += update_incentives_resource();
+  return $resources;
+}
+
+
+?>
