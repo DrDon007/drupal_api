@@ -110,7 +110,7 @@ function getMessageMatrix($resiliencyFactor)
     {
         $response = array(
         "resiliencyFactor"=> $resiliencyFactor,
-        message=>"A solar and storage solution would help you stay powered during unexpected events.",
+        "message"=>"A solar and storage solution would help you stay powered during unexpected events.",
         "outageRisk"=> "Moderate"
         );
         return $response;
@@ -119,7 +119,7 @@ function getMessageMatrix($resiliencyFactor)
     {
         $response = array(
         "resiliencyFactor"=> $resiliencyFactor,
-        message=>"A solar and storage solution would help you protect yourself from blackouts.",
+        "message"=>"A solar and storage solution would help you protect yourself from blackouts.",
         "outageRisk"=> "High"
         );
         return $response;
