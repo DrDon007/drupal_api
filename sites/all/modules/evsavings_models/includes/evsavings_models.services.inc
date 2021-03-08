@@ -7,7 +7,7 @@ function evsavings_models_resource() {
 			'index' => array(
 			  'help' => 'get models and models by brandid in evsavings',
 			  'callback' => 'getAllModels',
-			  'file' => array('type' => 'inc', 'module' => 'evsavings', 'name' => 'includes/evsavings.services'),
+			  'file' => array('type' => 'inc', 'module' => 'evsavings_models', 'name' => 'includes/evsavings_models.services'),
 			  'access callback' => 'models_custom_resource_access',
 			  'access arguments' => array(),
 			  'access arguments append' => TRUE,
