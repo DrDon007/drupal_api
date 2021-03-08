@@ -1,0 +1,14 @@
+
+
+<?php
+
+function finetune_services_resources() {
+  $resources = array();
+
+ //Include the necessary inc files.
+  module_load_include('inc', 'finetune', 'includes/finetune.services');
+
+ //Service Apis for contents.
+  $resources += finetune_resource();
+  return $resources;
+}

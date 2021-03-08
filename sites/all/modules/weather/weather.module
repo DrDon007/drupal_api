@@ -1,0 +1,15 @@
+<?php
+
+function weather_services_resources() {
+  $resources = array();
+
+ //Include the necessary inc files.
+  module_load_include('inc', 'weather', 'includes/weather.services');
+
+ //Service Apis for contents.
+  $resources += weather_resource();
+  return $resources;
+}
+
+
+?>

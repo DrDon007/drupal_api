@@ -1,10 +1,11 @@
 <?php
 
 function evsavingsBrands_services_resources() {
+function evsavings_services_resources() {
   $resources = array();
 
  //Include the necessary inc files.
-  module_load_include('inc', 'evsavings', 'includes/evsavings.services');
+  module_load_include('inc', 'evsavingsBrands', 'includes/evsavingsBrands.services');
 
  //Service Apis for contents.
   $resources += evsavingsBrands_resource();
