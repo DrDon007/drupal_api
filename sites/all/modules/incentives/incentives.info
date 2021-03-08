@@ -1,4 +1,0 @@
-name = Get Incentives API
-description = Fetching all the incentives by Scketch
-core = 7.x
-package = Custom API
