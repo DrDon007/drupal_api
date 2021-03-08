@@ -1,4 +1,0 @@
-name =demo
-description = demo by Preet
-core = 7.x
-package = Custom API

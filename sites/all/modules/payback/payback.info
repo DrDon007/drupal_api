@@ -1,4 +1,0 @@
-name = Get Payback API
-description = Fetching Payback
-core = 7.x
-package = Custom API

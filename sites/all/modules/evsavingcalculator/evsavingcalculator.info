@@ -1,4 +1,0 @@
-name = ev savings calculator API
-description =Calculate ev saving
-core = 7.x
-package = Custom API
