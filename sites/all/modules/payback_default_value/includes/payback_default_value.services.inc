@@ -1,6 +1,6 @@
 <?php
 
-function payback_resource() {
+function payback_default_value_resource() {
 	$api = array(
 		'payback-api' => array(
 		  'operations' => array(

@@ -1,6 +1,6 @@
 <?php
 
-function evsavings_resource() {
+function evsavingsBrands_resource() {
 	$api = array(
 		'evsavings-api' => array(
 		  'operations' => array(
@@ -8,8 +8,7 @@ function evsavings_resource() {
 			  'help' => 'get all brands',
 			  'callback' => 'get_all_brands',
 			  'file' => array('type' => 'inc', 'module' => 'evsavings', 'name' => 'includes/evsavings.services'),
-			  'access callback' => '_custom_resource_access',
-			  
+			  'access callback' => 'evsavingsBrands_resource_access',
 			  'args' => array(),
 			),
 		  ),
@@ -18,9 +17,9 @@ function evsavings_resource() {
   return $api;
 }
 
-function _custom_resource_access(){
-	return TRUE;
-}
+//function evsavingsBrands_resource_access(){
+//	return TRUE;
+//}
 
 function get_all_brands(){
 	
