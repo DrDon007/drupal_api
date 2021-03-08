@@ -13,17 +13,6 @@ function weather_resource()
 			    'access arguments append' => TRUE,
 			    'args' => array(),),
                 ),),
-                'stormwarnings-api' => array(
-                'operations' => array(
-                'index' => array(
-                'help' => 'get stormwarnings',
-                'callback' => 'get_stormwarnings',
-                'file' => array('type' => 'inc', 'module' => 'weather', 'name' => 'includes/weather.services'),
-                'access callback' => 'weather_custom_resource_access',
-                'access arguments' => array(),
-                'access arguments append' => TRUE,
-                'args' => array(),),
-                ),),
 	    );
     return $api;
 }
@@ -57,7 +46,6 @@ function PspsEventsFromUrl($countryCode)
 function weatherEventApiData($state,$country)
 {
     //$weatherEventsData = db_query("select f.statename,f.alert,f.county from (SELECT distinct s.statename as statename ,a.state as statecode ,a.event as alert,b.county as county,dense_rank() over(partition by b.county order by c.id asc) as rankk from alerts a INNER JOIN affectedzones b INNER JOIN warningpriority c on c.warning= a.event INNER JOIN statecodes s on s.statecode= a.state and a.state=b.state ) f where f.rankk=1 and f.statename='$state' and f.county='$country'")->fetchAll();
-	//$url="http://localhost/drupal_api/test/weatherEvent-api?stateName={$state}&countyName={$country}";
     $url="http://3.7.164.225:3000/api/v1/getWeatherEvents?stateName={$state}&countyName={$country}";
     $weatherEventsData = file_get_contents($url);
     $weatherEventData = json_decode($weatherEventsData, TRUE);
@@ -79,19 +67,31 @@ function ResiliencyFactor($stateName,$countryName)
 /*----------------------------Storm-Warning api function---------------------------*/
 function get_stormwarnings()
 {
-    //http://localhost/drupal_api/test/stormwarnings-api?lat=33.1313&long=-115.5214
-    //localhost/drupal_api/test/stormwarnings-api?lat=32.54&long=-86.64
-    //https://api.weather.gov/points/33.1313,-115.5214
-    //https://api.weather.gov/gridpoints/PSR/30,61/forecast
     $params = drupal_get_query_parameters();
     $lat = $params['lat'];
     $long = $params['long'];
     $url = "https://api.weather.gov/points/{$lat},{$long}";
     $stdata = drupal_http_request($url);
-    $res=json_decode($stdata);
-    //var_dump($res);
-    return $res;
-   
+    $res=json_decode($stdata->data);
+    $pro=$res->properties;
+    $gridX=$pro->gridX;
+    $gridY=$pro->gridY;
+    $office=$pro->gridId;
+    $forecast=$pro->forecast;
+    /*-----------------------call for second api, function forecast_Api()--------------------------------------*/
+    //https://api.weather.gov/gridpoints/PSR/30,61/forecast
+    $forecastData=forecast_Api($gridX,$gridY,$office);
+    return $forecastData;  
+}
+
+function forecast_Api($gridX,$gridY,$office)  
+{
+    $forcastApi="https://api.weather.gov/gridpoints/{$office}/{$gridX},{$gridY}/forecast";
+    $response = drupal_http_request($forcastApi);
+    $res = json_decode($response->data);
+    $properties=$res->properties;
+    $periods=$properties->periods;
+    return $periods;
 }
 
 /*----------------------------Defining MessageMatrix for Resiliency Factor---------------------------*/
@@ -129,9 +129,10 @@ function getMessageMatrix($resiliencyFactor)
 /*----------------------------Main Api function (Get severe weather and forecast Api's)---------------------------*/
 function get_SevereWeatherResults()
 {   
-    http://localhost/drupal_api/test/getSevereWeatherResults-api?lat=33.1313&long=-115.5214&stateName=Maine&countryName=Androscoggin
-    //http://localhost/drupal_api/test/getSevereWeatherResults-api?stateName=Maine&countryName=Androscoggin
-    //http://localhost/drupal_api/test/getSevereWeatherResults-api?lat=32.536382&long=-86.644490&stateName=Maine&countryName=Androscoggin
+    /*-----------------------------url's for testing-------------------------------
+    http://localhost/drupal_api/test/getSevereWeatherResults-api?lat=32.54&long=-86.64&stateName=Maine&countryName=Androscoggin
+    http://localhost/drupal_api/test/getSevereWeatherResults-api?lat=33.13&long=-115.52&stateName=Maine&countryName=Androscoggin
+    */
 
 	$params = drupal_get_query_parameters();
 	$state= $params['stateName'];
