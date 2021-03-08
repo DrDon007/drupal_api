@@ -1,0 +1,15 @@
+<?php
+
+function evsavings_models_services_resources() {
+  $resources = array();
+
+ //Include the necessary inc files.
+  module_load_include('inc', 'evsavings_models', 'includes/evsavings_models.services');
+
+ //Service Apis for contents.
+  $resources += evsavings_models_resource();
+  return $resources;
+}
+
+
+?>
