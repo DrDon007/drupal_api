@@ -1,0 +1,4 @@
+name = Get finetuned payback results API
+description = Fetching finetuned payback results by Scketch
+core = 7.x
+package = Custom API
