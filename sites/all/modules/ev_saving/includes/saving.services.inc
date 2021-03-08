@@ -7,7 +7,7 @@ function saving_resource() {
 			  'help' => 'get a article based on node id',
 			  'callback' => 'get_saving',
 			  'file' => array('type' => 'inc', 'module' => 'saving', 'name' => 'includes/saving.services'),
-			  'access callback' => '_custom_resource_access',
+			  'access callback' => 'evsavingcalculator_custom_resource_access',
 			  'access arguments' => array(),
 			  'access arguments append' => TRUE,
 			  'args' => array(),
@@ -54,9 +54,6 @@ function drupalmy_json_output($var)
   }
 }
 
-function _custom_resource_access(){
-	return TRUE;
-}
 
 function get_saving(){
 $params = drupal_get_query_parameters();

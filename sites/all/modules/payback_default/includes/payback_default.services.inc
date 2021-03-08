@@ -1,14 +1,14 @@
 <?php
 
-function payback_resource() {
+function payback_default_resource() {
 	$api = array(
 		'payback-api' => array(
 		  'operations' => array(
 			'index' => array(
 			  'help' => 'get all payback, rooftop, homevalue',
 			  'callback' => 'get_payback_rooftop_homevalue',
-			  'file' => array('type' => 'inc', 'module' => 'payback', 'name' => 'includes/payback.services'),
-			  'access callback' => 'payback_resource_access',
+			  'file' => array('type' => 'inc', 'module' => 'payback_default', 'name' => 'includes/payback_default.services'),
+			  'access callback' => 'payback_custom_resource_access',
 			  'access arguments' => array(),
 			  'access arguments append' => TRUE,
 			  'args' => array(),
@@ -18,7 +18,7 @@ function payback_resource() {
 	);
   return $api;
 }
-function payback_resource_access(){
+function payback_custom_resource_access(){
 	return TRUE;
 }
 
@@ -74,7 +74,6 @@ function get_payback_rooftop_homevalue(){
 		}
 	}	
 	$response1 = array("payBackSavings"=>abs($data), "payBackPeriod"=>$count, "installationCapacity"=>6, "installationPrice" =>$installationPrice);
- 	//return $response1;
      
     $url = "http://3.7.164.225:3000/api/v1/getFeasibilityFactor/?lat={$lat}&long={$long}";
 	$feasiblityFactorScore = file_get_contents($url);
@@ -159,7 +158,7 @@ function get_payback_rooftop_homevalue(){
     }
   }
 	$response2 =  array("savings"=> abs($data), "roofTopPotential" => floor($roofTopPotential),"message" =>$message,"pvSystemSize" => $pvSystemSize1, "roofTopArea" =>$roofTopArea,"note:"=>$note);
-
+	
 	function get_propertyID($zipcode)
 	{
 		$quant_property_id="https://qvmservices-test.quantarium.com/QDataService/QueryPropertiesByAddress?u=EnphaseEnergy-Test&k=.6-s3V%3B49%5B1G8qDn&address=5700%20N%20OCEAN%20BLVD%20UNIT%201010&citystate_zip={$zipcode}";
@@ -188,7 +187,7 @@ function get_payback_rooftop_homevalue(){
 
 	//--------------------Calucating Home values -------------------------------
 	//home values Solar calling a funtion 
-    $homeValueSolar=getOperatingCf($initialCapacity,$minAgeOfSolarSystem,$zipcode,$monthlyBill);
+    $homeValueSolar=getOperatingCfDefault($initialCapacity,$minAgeOfSolarSystem,$zipcode,$monthlyBill);
 	
 	//----------------------values from api calls, getting homevalue ----------------------
 	$quanteriumPropertyID=get_propertyID($zipcode);
@@ -203,32 +202,32 @@ function get_payback_rooftop_homevalue(){
 	}
 }
 
-function myfunction($v1,$v2)
+function myfunctionDefault($v1,$v2)
 {
 	return $v1+$v2;
 }
 
-function getOM()
+function getOMDefault()
 {
 	return 0;
 }
 
-function getOperatingCf($initialCapacity,$minAgeOfSolarSystem,$zipcode,$monthlyBill)
+function getOperatingCfDefault($initialCapacity,$minAgeOfSolarSystem,$zipcode,$monthlyBill)
 {
-    $getBilSavings = getBillSavings($initialCapacity, $zipcode, $monthlyBill);
+    $getBilSavings = getBillSavingsDefault($initialCapacity, $zipcode, $monthlyBill);
 	//return $getBilSavings;
-	$finalOM = getOM();
+	$finalOM = getOMDefault();
 	for($i = $minAgeOfSolarSystem + 0; $i <25; $i++) 
 	{
 			$cfArray[$i] = round($getBilSavings[$i]) + $finalOM;
 	
 	}
-	$sum = array_reduce($cfArray,"myfunction",0);
+	$sum = array_reduce($cfArray,"myfunctionDefault",0);
 	return $sum;						
 }
 
 // calculating Bill saving for home value
-function getBillSavings($initialCapacity, $zipcode,$monthlyBill)
+function getBillSavingsDefault($initialCapacity, $zipcode,$monthlyBill)
 {
 	$url="http://34.197.190.88:8888/solarOnlySavings?addr={$zipcode}&bill={$monthlyBill}&pv={$initialCapacity}";
 	//$url="http://34.197.190.88:8888/solarOnlySavings?addr=29582&bill=150&pv=6";

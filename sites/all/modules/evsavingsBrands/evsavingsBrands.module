@@ -1,7 +1,7 @@
 <?php
 
-function evsavingsBrands_services_resources() {
-function evsavings_services_resources() {
+function evsavingsBrands_services_resources() 
+{
   $resources = array();
 
  //Include the necessary inc files.
