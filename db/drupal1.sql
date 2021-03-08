@@ -1329,7 +1329,7 @@ CREATE TABLE IF NOT EXISTS `image_effects` (
   `weight` int(11) NOT NULL DEFAULT '0' COMMENT 'The weight of the effect in the style.',
   `name` varchar(255) NOT NULL COMMENT 'The unique name of the effect to be executed.',
   `data` longblob NOT NULL COMMENT 'The configuration data for the effect.'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Stores configuration options for image effects.';
+) ENGINE=InnoDB DEFAULT =utf8 COMMENT='Stores configuration options for image effects.';
 
 -- --------------------------------------------------------
 

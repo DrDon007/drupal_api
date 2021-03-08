@@ -1,14 +1,14 @@
 <?php
 
-function evsavings_resource() {
+function evsavings_models_resource() {
 	$api = array(
 		'evsavings-api' => array(
 		  'operations' => array(
 			'index' => array(
-			  'help' => 'get all evsavings',
+			  'help' => 'get models and models by brandid in evsavings',
 			  'callback' => 'getAllModels',
 			  'file' => array('type' => 'inc', 'module' => 'evsavings', 'name' => 'includes/evsavings.services'),
-			  'access callback' => '_custom_resource_access',
+			  'access callback' => 'models_custom_resource_access',
 			  'access arguments' => array(),
 			  'access arguments append' => TRUE,
 			  'args' => array(),
@@ -19,7 +19,7 @@ function evsavings_resource() {
 	);
   return $api;
 }
-function _custom_resource_access(){
+function models_custom_resource_access(){
 	return TRUE;
 }
 

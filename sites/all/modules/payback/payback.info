@@ -1,0 +1,4 @@
+name = Get Payback, Rooftop, Homevalue API
+description = Fetching all the Payback, Rooftop, Homevalue by Scketch
+core = 7.x
+package = Custom API
