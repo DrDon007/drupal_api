@@ -7,7 +7,7 @@ function evsavingsBrands_resource() {
 			'index' => array(
 			  'help' => 'get all brands',
 			  'callback' => 'get_all_brands',
-			  'file' => array('type' => 'inc', 'module' => 'evsavings', 'name' => 'includes/evsavings.services'),
+			  'file' => array('type' => 'inc', 'module' => 'evsavingsBrands', 'name' => 'includes/evsavingsBrands.services'),
 			  'access callback' => 'evsavingsBrands_resource_access',
 			  'args' => array(),
 			),
@@ -17,9 +17,9 @@ function evsavingsBrands_resource() {
   return $api;
 }
 
-//function evsavingsBrands_resource_access(){
-//	return TRUE;
-//}
+function evsavingsBrands_resource_access(){
+	return TRUE;
+}
 
 function get_all_brands(){
 	

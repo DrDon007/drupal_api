@@ -1,14 +1,14 @@
 <?php
 
-function payback_default_value_resource() {
+function payback_default_resource() {
 	$api = array(
 		'payback-api' => array(
 		  'operations' => array(
 			'index' => array(
 			  'help' => 'get all payback, rooftop, homevalue',
 			  'callback' => 'get_payback_rooftop_homevalue',
-			  'file' => array('type' => 'inc', 'module' => 'payback', 'name' => 'includes/payback.services'),
-			  'access callback' => 'payback_resource_access',
+			  'file' => array('type' => 'inc', 'module' => 'payback_default', 'name' => 'includes/payback_default.services'),
+			  'access callback' => 'payback_custom_resource_access',
 			  'access arguments' => array(),
 			  'access arguments append' => TRUE,
 			  'args' => array(),
@@ -18,7 +18,7 @@ function payback_default_value_resource() {
 	);
   return $api;
 }
-function payback_resource_access(){
+function payback_custom_resource_access(){
 	return TRUE;
 }
 
@@ -74,7 +74,6 @@ function get_payback_rooftop_homevalue(){
 		}
 	}	
 	$response1 = array("payBackSavings"=>abs($data), "payBackPeriod"=>$count, "installationCapacity"=>6, "installationPrice" =>$installationPrice);
- 	//return $response1;
      
     $url = "http://3.7.164.225:3000/api/v1/getFeasibilityFactor/?lat={$lat}&long={$long}";
 	$feasiblityFactorScore = file_get_contents($url);
@@ -159,7 +158,7 @@ function get_payback_rooftop_homevalue(){
     }
   }
 	$response2 =  array("savings"=> abs($data), "roofTopPotential" => floor($roofTopPotential),"message" =>$message,"pvSystemSize" => $pvSystemSize1, "roofTopArea" =>$roofTopArea,"note:"=>$note);
-
+	
 	function get_propertyID($zipcode)
 	{
 		$quant_property_id="https://qvmservices-test.quantarium.com/QDataService/QueryPropertiesByAddress?u=EnphaseEnergy-Test&k=.6-s3V%3B49%5B1G8qDn&address=5700%20N%20OCEAN%20BLVD%20UNIT%201010&citystate_zip={$zipcode}";

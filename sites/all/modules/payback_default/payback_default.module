@@ -1,0 +1,14 @@
+<?php
+
+function payback_default_services_resources() {
+  $resources = array();
+
+ //Include the necessary inc files.
+  module_load_include('inc', 'payback_default', 'includes/payback_default.services');
+
+ //Service Apis for contents.
+  $resources += payback_default_resource();
+  return $resources;
+}
+
+?>
