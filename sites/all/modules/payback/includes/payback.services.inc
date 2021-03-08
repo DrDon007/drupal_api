@@ -196,9 +196,10 @@ function get_payback_rooftop_homevalue(){
 	$homeValueQuantarium=get_homeValue($quanteriumPropertyID);
     $finalHomeValue= $homeValueSolar + $homeValueQuantarium;
 	$response3 = array("homeValueWithSolar"=>$finalHomeValue,"estimatedSavings"=>$homeValueSolar,"homeValueWithOutSolar"=>$homeValueQuantarium,"initialCapacity"=>$initialCapacity,"ageOfSolarSystem"=>$minAgeOfSolarSystem);
-	//return array("homeValueData"=>$response);
 	
-	return $response1+$response2+$response3;
+	//final output
+	$response = array("payback" => $response1, "rooftop" => $response2, "homevalue" => $response3);
+	return $response;
 	}
 }
 
