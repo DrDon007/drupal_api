@@ -62,6 +62,7 @@ function get_finetune(){
 	$utilityFactorScore = file_get_contents($url);
 	$utilityFactorScore = json_decode($utilityFactorScore, TRUE);
     $utilityFactorScore1 = $utilityFactorScore['utilityFactorScore'];
+	$utilityFactorScore1 = $utilityFactorScore1/10;
 	
     $roofTopPotential =  (($feasiblityFactorScore1 * (70/100) + $utilityFactorScore1 * (10/100))/80) * 10;
 	$a = ($a * 70)/100; 
@@ -141,7 +142,7 @@ function get_finetune(){
       	$message = "Your home is currently not a good candidate for solar. Check our knowledge section to learn how to optimize for higher production.";
     }
   }
-    $response1 =  array("25yearssavings"=> abs($data), "roofTopPotential" => floor($roofTopPotential),"message" =>$message,"pvSystemSize" => $pvSystemSize1, "roofTopArea" =>$roofTopArea1,"note:"=>$note, "savings" => floor($savings), "finalroofScore" => floor($finalroofScore), "sunlight" => floor($sunlight));
+    $response1 =  array("25yearssavings"=> abs($data), "roofTopPotential" => floor($roofTopPotential),"message" =>$message,"pvSystemSize" => $pvSystemSize1, "roofTopArea" =>$roofTopArea1,"note:"=>$note, "utilitySavings" => floor($savings), "finalroofScore" => floor($finalroofScore), "sunlight" => floor($sunlight));
     $response2 = array("payBackSavings"=>abs($data), "payBackPeriod"=>$count, "installationCapacity"=>6, "installationPrice" =>$installationPrice);
 
 
