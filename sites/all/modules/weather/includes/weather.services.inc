@@ -1,6 +1,6 @@
 <?php
 
-function weather_resource() 
+function weather_resource()
 {
 	$api = array('getSevereWeatherResults-api' => array(
 		        'operations' => array(
@@ -70,6 +70,7 @@ function get_stormwarnings()
     $params = drupal_get_query_parameters();
     $lat = $params['lat'];
     $long = $params['long'];
+		$key = $params['key'];
     $url = "https://api.weather.gov/points/{$lat},{$long}";
     $stdata = drupal_http_request($url);
     $res=json_decode($stdata->data);
@@ -80,11 +81,14 @@ function get_stormwarnings()
     $forecast=$pro->forecast;
     /*-----------------------call for second api, function forecast_Api()--------------------------------------*/
     //https://api.weather.gov/gridpoints/PSR/30,61/forecast
-    $forecastData=forecast_Api($gridX,$gridY,$office);
-    return $forecastData;  
+		/** validation **/
+
+			$forecastData=forecast_Api($gridX,$gridY,$office);
+	    return $forecastData;
+
 }
 
-function forecast_Api($gridX,$gridY,$office)  
+function forecast_Api($gridX,$gridY,$office)
 {
     $forcastApi="https://api.weather.gov/gridpoints/{$office}/{$gridX},{$gridY}/forecast";
     $response = drupal_http_request($forcastApi);
@@ -97,7 +101,7 @@ function forecast_Api($gridX,$gridY,$office)
 /*----------------------------Defining MessageMatrix for Resiliency Factor---------------------------*/
 function getMessageMatrix($resiliencyFactor)
 {
-    if($resiliencyFactor <= 30) 
+    if($resiliencyFactor <= 30)
     {
         $response = array(
         "resiliencyFactor"=> $resiliencyFactor,
@@ -106,7 +110,7 @@ function getMessageMatrix($resiliencyFactor)
         );
         return $response;
     }
-    if($resiliencyFactor >= 31 && $resiliencyFactor <= 60) 
+    if($resiliencyFactor >= 31 && $resiliencyFactor <= 60)
     {
         $response = array(
         "resiliencyFactor"=> $resiliencyFactor,
@@ -115,7 +119,7 @@ function getMessageMatrix($resiliencyFactor)
         );
         return $response;
     }
-    if($resiliencyFactor >= 61 && $resiliencyFactor <= 100) 
+    if($resiliencyFactor >= 61 && $resiliencyFactor <= 100)
     {
         $response = array(
         "resiliencyFactor"=> $resiliencyFactor,
@@ -128,7 +132,7 @@ function getMessageMatrix($resiliencyFactor)
 
 /*----------------------------Main Api function (Get severe weather and forecast Api's)---------------------------*/
 function get_SevereWeatherResults()
-{   
+{
     /*-----------------------------url's for testing-------------------------------
     http://localhost/drupal_api/test/getSevereWeatherResults-api?lat=32.54&long=-86.64&stateName=Maine&countryName=Androscoggin
     http://localhost/drupal_api/test/getSevereWeatherResults-api?lat=33.13&long=-115.52&stateName=Maine&countryName=Androscoggin
@@ -139,25 +143,29 @@ function get_SevereWeatherResults()
     $country= $params['countryName'];
     $lattitude= $params['lat'];
     $longitude= $params['long'];
-    
+		$key = $params['key'];
+		$key_access_val = 'pD62NsMZD3';
+		if( $key === $key_access_val){
+
+
     if(!empty($state) && !empty($country) && !empty($lattitude) && !empty($longitude))
     {
-        
+
         /*----------------------------Power-Disruption api function---------------------------*/
-        $powerDisruptionData=powerDisruptionData($lattitude,$longitude);   
+        $powerDisruptionData=powerDisruptionData($lattitude,$longitude);
         //return $powerDisruptionData;
-                
+
 
         /*----------------------------psps-Event api call---------------------------*/
-        $pspsEventData=PspsEventsFromUrl($country);       
+        $pspsEventData=PspsEventsFromUrl($country);
         //return $pspsEventData;
 
 
         /*----------------------------weather-Event api call---------------------------*/
-        $wEventData=weatherEventApiData($state,$country);                        
+        $wEventData=weatherEventApiData($state,$country);
         //return $wEventData;
 
-        
+
         /*----------------------------Resiliency-Factor api call---------------------------*/
         $resiliencyFactorScore=ResiliencyFactor($state,$country);
         $resiliencyMessages=getMessageMatrix($resiliencyFactorScore);
@@ -176,6 +184,10 @@ function get_SevereWeatherResults()
     {
         return $response=array(warning=>"please provide required  parameters",error=>"404 not found");
     }
+	}else{
+		return array(warning=>"Not authorized to access this resource/api",error=>"403 Forbidden");
+
+	}
 }
 
 

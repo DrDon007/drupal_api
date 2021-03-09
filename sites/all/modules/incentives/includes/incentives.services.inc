@@ -14,15 +14,6 @@ function incentives_resource() {
 			  'args' => array(),
 
 			),
-			'update' => array(
-				'help' => 'Incentive Update',
-			  'callback' => 'update_incentive',
-			  'file' => array('type' => 'inc', 'module' => 'incentives', 'name' => 'includes/incentives.services'),
-			  'access callback' => 'incentives_custom_resource_access',
-			  'access arguments' => array(),
-			  'access arguments append' => TRUE,
-			  'args' => array(),
-			),
 		  ),
 		),
 	);

@@ -28,21 +28,26 @@ function getAllModels(){
 	$params = drupal_get_query_parameters();
 	$brandId = $params['brandId'];
 	$limit = $params['limit'];
+	$key = $params['key'];
+	$key_access_val = 'pD62NsMZD3';
+	if( $key === $key_access_val){
+		if (!empty($brandId) && !empty($limit)) {
+			//$result = db_query('SELECT * FROM evmodels WHERE n.brandid = :brandid LIMIT 2', array(':state' => $stateName))->fetchAll();
 
-	if (!empty($brandId) && !empty($limit)) {
-		//$result = db_query('SELECT * FROM evmodels WHERE n.brandid = :brandid LIMIT 2', array(':state' => $stateName))->fetchAll();
+			$sql = 'SELECT * FROM evmodels n WHERE n.brandId = :brandId';
+			$result1 = db_query_range($sql,0,$limit, array(':brandId' => $brandId))->fetchAll();
 
-		$sql = 'SELECT * FROM evmodels n WHERE n.brandId = :brandId';
-		$result1 = db_query_range($sql,0,$limit, array(':brandId' => $brandId))->fetchAll();
+			return $result1;
+		}
+		else{
 
-		return $result1;
+			$result = db_query('SELECT * FROM evmodels')->fetchAll();
+			return $result;
+		}
+	}else {
+		return array(warning=>"Not authorized to access this resource/api",error=>"403 Forbidden");
+
 	}
-	else{
-
-		$result = db_query('SELECT * FROM evmodels')->fetchAll();
-		return $result;
-	}
-
 
 
 
