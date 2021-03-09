@@ -79,19 +79,25 @@ function get_payback_rooftop_homevalue(){
 		}
 	}
 	$response1 = array("payBackSavings"=>abs($data), "payBackPeriod"=>$count, "installationCapacity"=>6, "installationPrice" =>$installationPrice);
-
+     
     $url = "http://3.7.164.225:3000/api/v1/getFeasibilityFactor/?lat={$lat}&long={$long}";
 	$feasiblityFactorScore = file_get_contents($url);
 	$feasiblityFactorScore = json_decode($feasiblityFactorScore, TRUE);
     $feasiblityFactorScore1 = $feasiblityFactorScore['feasiblityFactorScore'];
+	$a = $feasiblityFactorScore['feasiblityFactorScore'];
 
     $url = "http://3.7.164.225:3000/api/v1/getUtilityFactor/?lat={$lat}&long={$long}";
 	$utilityFactorScore = file_get_contents($url);
 	$utilityFactorScore = json_decode($utilityFactorScore, TRUE);
     $utilityFactorScore1 = $utilityFactorScore['utilityFactorScore'];
-    $roofTopPotential =  (($feasiblityFactorScore1 * (70/100) + $utilityFactorScore1 * (10/100))/80) * 10;
-
-
+    
+	$roofTopPotential =  (($feasiblityFactorScore1 * (70/100) + $utilityFactorScore1 * (10/100))/80) * 10;
+	$a = ($a * 70)/100; 
+	$roofScore = ($a * 50)/100;
+	$finalroofScore = $roofScore/10;
+	$irrScore = ($a*20)/100;
+	$sunlight = $irrScore/10;
+	$savings = $utilityFactorScore1;
 
   	$url = "http://3.7.164.225:3000/api/v1/getSunRoof?lat={lat}&long={long}";
 	$pvSystemSize = file_get_contents($url);
@@ -108,62 +114,62 @@ function get_payback_rooftop_homevalue(){
 
 	if($feasiblityFactorScore1 > 70) {
     	if ($utilityFactorScore1 > 70) {
-      		$message = "This home is ideal for high solar energy production and can save a lot on utility bills with a solar installation";
+      		$message = "Your home is a perfect fit and can save a lot on utility bills with a solar installation.";
     }
     if($utilityFactorScore1 > 50 && $utilityFactorScore1 < 70) {
-      	$message = "This home is ideal for high solar energy production and can save a lot on utility bills with a solar installation.";
+      	$message = "Your home is a perfect fit and can save a lot on utility bills with a solar installation.";
     }
     if($utilityFactorScore1 > 30 && $utilityFactorScore1 < 50) {
-      	$message = "This home is ideal for high solar energy production.";
+      	$message = "Great, your home is a perfect fit for solar.";
     }
     if($utilityFactorScore1 < 30) {
-      	$message = "This home is ideal for high solar energy production.";
+      	$message = "Great, your home is a perfect fit for solar.";
     }
   	}
   	if ($feasiblityFactorScore1 > 50 && $feasiblityFactorScore1 < 70) {
     	if (utility > 70) {
-      	$message = "This home is ideal for high solar energy production and can save a lot on utility bills with a solar installation";
+      	$message = "Your home is a perfect fit and can save a lot on utility bills with a solar installation.";
     }
-    if ($utilityFactorScore1 > 50 && $utilityFactorScore1 < 70) {
-      	$message = "This home is ideal for high solar energy production and can save a lot on utility bills with a solar installation.";
+    if ($utilityFactorSc0ore1 > 50 && $utilityFactorScore1 < 70) {
+      	$message = "Your home is a perfect fit and can save a lot on utility bills with a solar installation.";
     }
     if ($utilityFactorScore1 > 30 && $utilityFactorScore1 < 50) {
-      	$message = "This home is ideal for high solar energy production.";
+      	$message = "Great, your home is a perfect fit for solar.";
     }
     if ($utilityFactorScore1 < 30) {
-      	$message = "This home is ideal for high solar energy production.";
+      	$message = "Great, your home is a perfect fit for solar.";
     }
   }
   if ($feasiblityFactorScore1 > 30 && $feasiblityFactorScore1 < 50) {
     if ($utilityFactorScore1 > 70) {
-      	$message = "Your home is not currently optimal for solar installation. You may still enjoy high solar output and save on utility bills. Check our knowledge section to learn how to optimize for solar power generation.";
+      	$message = "Your home is currently not a good candidate for solar. Check our knowledge section to learn how to optimize for higher production and save on utility bills.";
     }
     if ($utilityFactorScore1 > 50 && $utilityFactorScore1 < 70) {
-      	$message = "Your home is not currently optimal for solar installation. You may still enjoy high solar output and save on utility bills. Check our knowledge section to learn how to optimize for solar power generation.";
+      	$message = "Your home is currently not a good candidate for solar. Check our knowledge section to learn how to optimize for higher production and save on utility bills..";
     }
     if ($utilityFactorScore1 > 30 && $utilityFactorScore1 < 50) {
-      	$message = "Your home is not currently optimal for solar installation. Check our knowledge section to learn how to optimize for solar power generation.";
+      	$message = "Your home is currently not a good candidate for solar. Check our knowledge section to learn how to optimize for higher production.";
     }
     if ($utilityFactorScore1 < 30) {
-      	$message = "Your home is not currently optimal for solar installation. Check our knowledge section to learn how to optimize for solar power generation.";
+      	$message = "Your home is currently not a good candidate for solar. Check our knowledge section to learn how to optimize for higher production.";
     }
   }
   if ($feasiblityFactorScore1 < 30) {
     if (utility > 70) {
-      	$message = "Your home is not currently optimal for solar installation. Check our knowledge section to learn how to optimize for solar power generation.";
+      	$message = "Your home is currently not a good candidate for solar. Check our knowledge section to learn how to optimize for higher production and save on utility bills.";
     }
     if ($utilityFactorScore1 > 50 && $utilityFactorScore1 < 70) {
-      	$message = "Your home is not currently optimal for solar installation. Check our knowledge section to learn how to optimize for solar power generation.";
+      	$message = "Your home is currently not a good candidate for solar. Check our knowledge section to learn how to optimize for higher production and save on utility bills.";
     }
     if ($utilityFactorScore1 > 30 && $utilityFactorScore1 < 50) {
-      	$message = "Your home is not currently optimal for solar installation. Check our knowledge section to learn how to optimize for solar power generation.";
+      	$message = "Your home is currently not a good candidate for solar. Check our knowledge section to learn how to optimize for higher production.";
     }
     if ($utilityFactorScore1 < 30) {
-      	$message = "Your home is not currently optimal for solar installation. Check our knowledge section to learn how to optimize for solar power generation.";
+      	$message = "Your home is currently not a good candidate for solar. Check our knowledge section to learn how to optimize for higher production.";
     }
   }
-	$response2 =  array("savings"=> abs($data), "roofTopPotential" => floor($roofTopPotential),"message" =>$message,"pvSystemSize" => $pvSystemSize1, "roofTopArea" =>$roofTopArea,"note:"=>$note);
-
+	$response2 =  array("25yearssavings"=> abs($data), "roofTopPotential" => floor($roofTopPotential),"message" =>$message,"pvSystemSize" => $pvSystemSize1, "roofTopArea" =>$roofTopArea,"note:"=>$note, "savings" => floor($savings), "finalroofScore" => floor($finalroofScore), "sunlight" => floor($sunlight));
+	
 	function get_propertyID($zipcode)
 	{
 		$quant_property_id="https://qvmservices-test.quantarium.com/QDataService/QueryPropertiesByAddress?u=EnphaseEnergy-Test&k=.6-s3V%3B49%5B1G8qDn&address=5700%20N%20OCEAN%20BLVD%20UNIT%201010&citystate_zip={$zipcode}";
