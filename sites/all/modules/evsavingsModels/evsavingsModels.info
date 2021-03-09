@@ -1,0 +1,4 @@
+name = Get EV savings API
+description = Fetching all the Ev savings
+core = 7.x
+package = Custom API

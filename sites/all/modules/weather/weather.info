@@ -1,4 +1,4 @@
-name = Get Incentives API
+name = weather data
 description = Fetching all the incentives
 core = 7.x
 package = Custom API
